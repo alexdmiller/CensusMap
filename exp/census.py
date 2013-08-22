@@ -19,6 +19,7 @@ conn = httplib.HTTPConnection("data.fcc.gov")
 conn.request("GET", "/api/block/find?format=json&latitude="+lat+"&longitude="+long+"&showall=true")
 res = conn.getresponse()
 resJSON = json.loads(res.read())
+print resJSON
 
 locationCodes = FIPS(resJSON['Block']['FIPS'])
 print locationCodes
