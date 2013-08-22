@@ -3,15 +3,15 @@ package main
 import (
     "fmt"
     "net/http"
+    "censusmap/data"
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
-    fmt.Fprintf(w, "%s", r.URL.Path[1:])
+    fmt.Fprintf(w, "%v", data.RequestLocationFromCoords(50, 30.2))
 }
 
 func main() {
     http.HandleFunc("/", handler)
-    fmt.Printf("asdfasdfasdf running the server...\n")
     http.ListenAndServe(":8080", nil)
 }
 
