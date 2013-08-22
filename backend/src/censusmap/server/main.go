@@ -7,7 +7,7 @@ import (
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
-    fmt.Fprintf(w, "%v", data.RequestLocationFromCoords(50, 30.2))
+    fmt.Fprintf(w, "%v", data.RequestLocationFromCoords(47.598755, -122.332764))
 }
 
 func main() {
