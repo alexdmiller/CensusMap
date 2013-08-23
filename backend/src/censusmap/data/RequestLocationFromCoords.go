@@ -11,6 +11,7 @@ import (
 
 const FCCBlockAPI string = "http://data.fcc.gov/api/block/find"
 
+// For marshalling the response from fcc.gov
 type FCCLocationResponse struct {
   County struct {
     FIPS, Name string
@@ -27,10 +28,16 @@ type CensusLocation struct {
 	State, County string
 }
 
+// Stores FIPS identification codes for geographic levels
 type CensusLocationCodes struct {
 	StateCode, CountyCode, TractCode, BlockGroupCode []byte
 }
 
+/**
+ * Uses an FCC API to find the block group FIPS code for the passed latitude and
+ * longitude. A block group is the finest granularity of geographic data released
+ * by the US Census.  
+ */
 func RequestLocationFromCoords(lat float64, lon float64) (CensusLocation, CensusLocationCodes) {
 	stringParams := []string{
 		strconv.FormatFloat(lat, 'f', -1, 64),
@@ -65,7 +72,7 @@ func RequestLocationFromCoords(lat float64, lon float64) (CensusLocation, Census
     bytes[0:2],
     bytes[2:5],
     bytes[5:11],
-    bytes[11:],
+    bytes[11:12],
   }
 	return location, locationCodes
 }

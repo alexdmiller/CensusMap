@@ -1,19 +1,17 @@
 package main
 
 import (
-    "fmt"
-    "net/http"
-    "censusmap/data"
+  "net/http"
+  "censusmap/data"
+  "fmt"
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Printf("handler\n")
-  location, codes := data.RequestLocationFromCoords(47.598755, -122.332764)
-  fmt.Fprintf(w, "%v", location)
-  fmt.Fprintf(w, "%v", codes)
+  _, codes := data.RequestLocationFromCoords(47.598755, -122.332764)
+  fmt.Fprintf(w, "%s", data.RequestCensusDataFromCodes(codes))
 }
 
 func main() {
-    http.HandleFunc("/", handler)
-    http.ListenAndServe(":8080", nil)
+  http.HandleFunc("/", handler)
+  http.ListenAndServe(":8080", nil)
 }
