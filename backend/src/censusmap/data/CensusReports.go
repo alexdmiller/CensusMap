@@ -52,8 +52,18 @@ func (r *CensusReports) ParseConfig(config []byte) {
   if err != nil {
     log.Fatal(err)
   }
+  var report Report
   for i := range parsed {
-    log.Printf("%v", parsed[i])
+    reportConfig := parsed[i].(map[string]interface{})
+    kind := reportConfig["kind"].(string)
+    switch kind {
+    case "plain_value":
+      report = new(PlainValueReport)
+      report.ParseConfig(reportConfig)
+    case "composition":
+    default:
+      log.Fatal("Report kind " + kind + " not supported.")
+    }
   }
 }
 
