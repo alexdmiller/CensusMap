@@ -13,30 +13,33 @@ formatData(data) stream?
 
 import ("io")
 
-type Report struct {
+type Report interface {
+  ParseConfig(config []byte)
+  GetRequiredVariables() []string
+  SetVariable(name string, value string)
+  WriteFormattedReport(w io.Writer)
+}
+
+type BaseReport struct {
   requiredVariables []string
   variableValues map[string]string
 }
 
-func (r Report) ParseConfig(config string) {
-
+func (r BaseReport) GetRequiredVariables() []string {
+  return r.requiredVariables
 }
 
-func (r Report) GetRequiredVariables() []string {
-  return nil
-}
-
-func (r Report) SetVariable(name string, value string) {
-
-}
-
-func (r Report) writeFormattedReport(w io.Writer) {
-
+func (r BaseReport) SetVariable(name string, value string) {
+  if (r.variableValues == nil) {
+    panic("Must call ParseConfig before SetVariable")
+  }
+  r.variableValues[name] = value
 }
 
 
 type CensusReports struct {
   reports []Report
+
   requiredVariables map[string]bool
 }
 

@@ -35,3 +35,6 @@ print requestParams
 conn.request("GET", requestParams)
 res = conn.getresponse()
 print json.loads(res.read())
+
+# http://api.census.gov/data/2011/acs5?get=B00001_001E&for=block+group:2&in=state:53+county:033+tract:009300&key=ab995d23ecc36a2920db2262f9ea8a9003ab2098
+#                      /data/2011/acs5?get=B00001_001E&for=block+group:2&in=state:53+county:033+tract:009300&key=ab995d23ecc36a2920db2262f9ea8a9003ab2098
