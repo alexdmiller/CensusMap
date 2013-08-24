@@ -12,8 +12,8 @@ type PlainValueReport struct {
 }
 
 type PlainValueConfigFormat struct {
-  BaseConfigFormat
-  Vars map[string]string
+  Kind string `json:"kind"`
+  Vars map[string]string `json:"vars"`
 }
 
 func (r *PlainValueReport) ParseConfig(config []byte) {

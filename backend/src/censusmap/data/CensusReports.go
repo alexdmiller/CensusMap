@@ -27,12 +27,12 @@ type BaseReport struct {
 }
 
 type BaseConfigFormat struct {
-  Kind string
+  Kind string `json:"kind"`
 }
 
 func (r *BaseReport) SetVariable(name string, value string) {
   if (r.variableValues == nil) {
-    panic("Must call ParseConfig before SetVariable")
+    r.variableValues = map[string]string{}
   }
   r.variableValues[name] = value
 }
