@@ -14,7 +14,7 @@ type PlainValueConfigFormat struct {
   Vars map[string]string
 }
 
-func (r PlainValueReport) ParseConfig(config []byte) {
+func (r *PlainValueReport) ParseConfig(config []byte) {
   parsed := new(PlainValueConfigFormat)
   err := json.Unmarshal(config, &parsed)
   if err != nil {
@@ -24,9 +24,12 @@ func (r PlainValueReport) ParseConfig(config []byte) {
   for _, code := range parsed.Vars {
     r.requiredVariables = append(r.requiredVariables, code)
   }
-  log.Printf("%v", r.requiredVariables)
 }
 
-func (r PlainValueReport) WriteFormattedReport(w io.Writer) {
+func (r *PlainValueReport) GetRequiredVariables() []string {
+  return r.requiredVariables
+}
+
+func (r *PlainValueReport) WriteFormattedReport(w io.Writer) {
   
 }

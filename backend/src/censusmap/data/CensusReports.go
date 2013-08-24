@@ -11,7 +11,8 @@ formatData(data) stream?
     ask pack to write itself to stream?0
 */
 
-import ("io")
+import ("io"
+    )
 
 type Report interface {
   ParseConfig(config []byte)
@@ -25,11 +26,7 @@ type BaseReport struct {
   variableValues map[string]string
 }
 
-func (r BaseReport) GetRequiredVariables() []string {
-  return r.requiredVariables
-}
-
-func (r BaseReport) SetVariable(name string, value string) {
+func (r *BaseReport) SetVariable(name string, value string) {
   if (r.variableValues == nil) {
     panic("Must call ParseConfig before SetVariable")
   }
@@ -43,15 +40,15 @@ type CensusReports struct {
   requiredVariables map[string]bool
 }
 
-func (r CensusReports) ParseConfig(config string) {
+func (r *CensusReports) ParseConfig(config string) {
 
 }
 
-func (r CensusReports) GetRequiredVariables() []string {
+func (r *CensusReports) GetRequiredVariables() []string {
   return nil
 }
 
-func (r CensusReports) WriteFormattedReports(w io.Writer) {
+func (r *CensusReports) WriteFormattedReports(w io.Writer) {
 
 }
 
