@@ -26,6 +26,10 @@ type BaseReport struct {
   variableValues map[string]string
 }
 
+type BaseConfigFormat struct {
+  Kind string
+}
+
 func (r *BaseReport) SetVariable(name string, value string) {
   if (r.variableValues == nil) {
     panic("Must call ParseConfig before SetVariable")
