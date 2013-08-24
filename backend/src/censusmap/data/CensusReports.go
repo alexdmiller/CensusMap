@@ -11,8 +11,11 @@ formatData(data) stream?
     ask pack to write itself to stream?0
 */
 
-import ("io"
-    )
+import (
+  "io"
+  "encoding/json"
+  "log"
+)
 
 type Report interface {
   ParseConfig(config []byte)
@@ -40,12 +43,18 @@ func (r *BaseReport) SetVariable(name string, value string) {
 
 type CensusReports struct {
   reports []Report
-
   requiredVariables map[string]bool
 }
 
-func (r *CensusReports) ParseConfig(config string) {
-
+func (r *CensusReports) ParseConfig(config []byte) {
+  var parsed []interface{}
+  err := json.Unmarshal(config, &parsed)
+  if err != nil {
+    log.Fatal(err)
+  }
+  for i := range parsed {
+    log.Printf("%v", parsed[i])
+  }
 }
 
 func (r *CensusReports) GetRequiredVariables() []string {

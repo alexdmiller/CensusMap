@@ -5,7 +5,6 @@ import (
   "fmt"
   "sort"
   "bytes"
-  "log"
 )
 
 const dummyConfig string = `{"kind": "plain_value", "vars": {"Total Population": "B01003_001", "Other": "B02001_007"}}`
