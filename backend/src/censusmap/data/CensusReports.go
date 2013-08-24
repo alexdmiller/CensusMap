@@ -18,7 +18,7 @@ import (
 )
 
 type Report interface {
-  ParseConfig(config []byte)
+  ParseConfig(config map[string]interface{})
   GetRequiredVariables() []string
   SetVariable(name string, value string)
   WriteFormattedReport(w io.Writer)
