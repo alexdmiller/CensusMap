@@ -4,7 +4,6 @@ import (
   "io"
   "encoding/json"
   "log"
-  "fmt"
 )
 
 type Report interface {
@@ -22,6 +21,7 @@ type BaseConfigFormat struct {
   Kind string `json:"kind"`
 }
 
+// TODO: Add constructor rather than check nil every call
 func (r *BaseReport) setVariable(name string, value string) {
   if (r.variableValues == nil) {
     r.variableValues = map[string]string{}
@@ -30,8 +30,16 @@ func (r *BaseReport) setVariable(name string, value string) {
 }
 
 func (r *BaseReport) RequestData(codes CensusLocationCodes) {
-  result := RequestCensusDataFromCodes(codes, []string{"B01003_001E", "B02001_001E"})
-  fmt.Printf("%v", result)
+  result := RequestCensusDataFromCodes(codes, r.requiredVariables)
+  resultJSON := [][]string{}
+  err := json.Unmarshal(result, &resultJSON)
+  if err != nil {
+    log.Printf("%s", result)
+    log.Fatal(err)
+  }
+  for i := range resultJSON[0] {
+    r.setVariable(resultJSON[0][i], resultJSON[1][i])
+  }
 }
 
 
