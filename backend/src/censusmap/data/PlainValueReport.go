@@ -1,11 +1,5 @@
 package data
 
-import (
-  "io"
-  "encoding/json"
-  "log"
-)
-
 type PlainValueReport struct {
   BaseReport
   parsedConfig map[string]interface{}
@@ -28,16 +22,13 @@ func (r *PlainValueReport) getRequiredVariables() []string {
   return r.requiredVariables
 }
 
-func (r *PlainValueReport) WriteFormattedReport(w io.Writer) {
+func (r *PlainValueReport) RequestAndParseData(codes CensusLocationCodes) interface{} {
+  variableValues := r.requestData(codes)
   response := new(PlainValueConfigFormat)
   response.Kind = "plain_value"
   response.Vars = map[string]string{}
   for name, code := range r.parsedConfig["vars"].(map[string]interface{}) {
-    response.Vars[name] = r.variableValues[code.(string)]
+    response.Vars[name] = variableValues[code.(string)]
   }
-  encoded, err := json.Marshal(response)
-  if err != nil {
-    log.Fatal(err)
-  }
-  w.Write(encoded)
+  return response
 }

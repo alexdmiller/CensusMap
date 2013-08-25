@@ -1,27 +1,40 @@
 package data
 
 import (
-
+  "testing"
 )
 
 var testFile = []byte(`[
   {
     "kind": "plain_value",
     "vars": {
-      "Total Population": "B01003_001",
-      "Other": "B02001_007"
+      "Total Population": "B01003_001E",
+      "Other": "B02001_007E"
+    }
+  },
+  {
+    "kind": "plain_value",
+    "vars": {
+      "Total Population": "B01003_001E"
     }
   },
   {
     "kind": "composition",
-    "total": "B02001_001",
+    "total": "B02001_001E",
     "name": "Racial Distribution",
     "parts": {
-      "White": "B02001_002",
-      "Black": "B02001_003",
-      "Native American": "B02001_004",
-      "Asian": "B02001_005",
-      "Other": "B02001_007"
+      "White": "B02001_002E",
+      "Black": "B02001_003E",
+      "Native American": "B02001_004E",
+      "Asian": "B02001_005E",
+      "Other": "B02001_007E"
     }
   }
 ]`)
+
+func TestParseAndRequestData(t *testing.T) {
+  _, codes := RequestLocationFromCoords(47.598755, -122.332764)
+  r := new(CensusReports)
+  r.ParseConfig(testFile)
+  r.MakeRequests(codes)
+}

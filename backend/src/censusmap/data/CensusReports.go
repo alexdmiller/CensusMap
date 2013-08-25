@@ -1,35 +1,27 @@
 package data
 
 import (
-  "io"
   "encoding/json"
   "log"
+  "fmt"
 )
 
 type Report interface {
   ParseConfig(config map[string]interface{})
-  RequestData(code CensusLocationCodes)
-  WriteFormattedReport(w io.Writer)
+  RequestAndParseData(code CensusLocationCodes) interface{}
+  requestData(code CensusLocationCodes) map[string]string
 }
 
 type BaseReport struct {
   requiredVariables []string
-  variableValues map[string]string
 }
 
 type BaseConfigFormat struct {
   Kind string `json:"kind"`
 }
 
-// TODO: Add constructor rather than check nil every call
-func (r *BaseReport) setVariable(name string, value string) {
-  if (r.variableValues == nil) {
-    r.variableValues = map[string]string{}
-  }
-  r.variableValues[name] = value
-}
-
-func (r *BaseReport) RequestData(codes CensusLocationCodes) {
+func (r *BaseReport) requestData(codes CensusLocationCodes) map[string]string {
+  variableValues := map[string]string{}
   result := RequestCensusDataFromCodes(codes, r.requiredVariables)
   resultJSON := [][]string{}
   err := json.Unmarshal(result, &resultJSON)
@@ -38,8 +30,9 @@ func (r *BaseReport) RequestData(codes CensusLocationCodes) {
     log.Fatal(err)
   }
   for i := range resultJSON[0] {
-    r.setVariable(resultJSON[0][i], resultJSON[1][i])
+    variableValues[resultJSON[0][i]] = resultJSON[1][i]
   }
+  return variableValues
 }
 
 
@@ -69,19 +62,9 @@ func (r *CensusReports) ParseConfig(config []byte) {
   }
 }
 
-func (r *CensusReports) MakeRequests() {
-
-}
-
-func keys(m map[string]bool) []string {
-  keys := []string{}
-  for k := range m {
-    keys = append(keys, k)
+func (r *CensusReports) MakeRequests(codes CensusLocationCodes) {
+  for i := range r.reports {
+    result := r.reports[i].RequestAndParseData(codes)
+    fmt.Printf("%s\n", result)
   }
-  return keys
 }
-
-func (r *CensusReports) WriteFormattedReports(w io.Writer) {
-
-}
-

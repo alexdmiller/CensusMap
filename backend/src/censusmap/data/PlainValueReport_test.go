@@ -4,7 +4,6 @@ import (
   "testing"
   "fmt"
   "sort"
-  "bytes"
   "encoding/json"
 )
 
@@ -35,27 +34,13 @@ func TestParseConfig(t *testing.T) {
   }
 }
 
-func TestWriteFormattedReport(t *testing.T) {
-  out := make([]byte, 0, 10)
-  writer := bytes.NewBuffer(out)
-  r := newPlainValueReport(t)
-  r.setVariable("B01003_001E", "12345")
-  r.setVariable("B02001_007E", "6798765")
-  r.WriteFormattedReport(writer)
-  expected := []byte(`{"kind":"plain_value","vars":{"Other":"6798765","Total Population":"12345"}}`)
-  actual := writer.Bytes()
-  if string(actual) != string(expected) {
-    t.Error("Expected %s but got %s", expected, actual)
-  }
-}
-
-func TestRequestDataAndWriteFormattedReport(t *testing.T) {
+func TestRequestAndParseData(t *testing.T) {
   _, codes := RequestLocationFromCoords(47.598755, -122.332764)
   r := newPlainValueReport(t)
-  r.RequestData(codes)
-  out := make([]byte, 0, 10)
-  writer := bytes.NewBuffer(out)
-  r.WriteFormattedReport(writer)
-  actual := writer.Bytes()
-  fmt.Printf("%s\n", actual)
+  result := r.RequestAndParseData(codes)
+  expected := `&{plain_value map[Other:0 Total Population:2134]}`
+  actual := fmt.Sprintf("%s", result)
+  if expected != actual {
+    t.Errorf("Expected %v but got %v", expected, actual)
+  }
 }
