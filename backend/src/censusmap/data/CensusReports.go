@@ -47,6 +47,7 @@ type CensusReports struct {
 }
 
 func (r *CensusReports) ParseConfig(config []byte) {
+  r.requiredVariables = map[string]bool{}
   var parsed []interface{}
   err := json.Unmarshal(config, &parsed)
   if err != nil {
@@ -60,15 +61,26 @@ func (r *CensusReports) ParseConfig(config []byte) {
     case "plain_value":
       report = new(PlainValueReport)
       report.ParseConfig(reportConfig)
-    case "composition":
+      required := report.GetRequiredVariables()
+      for i := range required {
+        r.requiredVariables[required[i]] = true
+      }
     default:
-      log.Fatal("Report kind " + kind + " not supported.")
+      log.Print("Report kind " + kind + " not supported.")
     }
   }
 }
 
+func keys(m map[string]bool) []string {
+  keys := []string{}
+  for k := range m {
+    keys = append(keys, k)
+  }
+  return keys
+}
+
 func (r *CensusReports) GetRequiredVariables() []string {
-  return nil
+  return keys(r.requiredVariables)
 }
 
 func (r *CensusReports) WriteFormattedReports(w io.Writer) {
