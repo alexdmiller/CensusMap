@@ -42,6 +42,7 @@ type CensusReports struct {
 }
 
 func (r *CensusReports) ParseConfig(config []byte) {
+  r.reports = []Report{}
   r.requiredVariables = map[string]bool{}
   var parsed []interface{}
   err := json.Unmarshal(config, &parsed)
@@ -56,6 +57,7 @@ func (r *CensusReports) ParseConfig(config []byte) {
     case "plain_value":
       report = new(PlainValueReport)
       report.ParseConfig(reportConfig)
+      r.reports = append(r.reports, report)
     default:
       log.Print("Report kind " + kind + " not supported.")
     }

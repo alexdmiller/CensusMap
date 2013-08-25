@@ -2,6 +2,7 @@ package data
 
 import (
   "testing"
+  "fmt"
 )
 
 var testFile = []byte(`[
@@ -31,6 +32,12 @@ var testFile = []byte(`[
     }
   }
 ]`)
+
+func TestCensusReportsParseConfig(t *testing.T) {
+  r := new(CensusReports)
+  r.ParseConfig(testFile)
+  fmt.Printf("%v\n", len(r.reports))
+}
 
 func TestParseAndRequestData(t *testing.T) {
   _, codes := RequestLocationFromCoords(47.598755, -122.332764)
