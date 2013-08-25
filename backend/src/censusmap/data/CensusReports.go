@@ -3,7 +3,6 @@ package data
 import (
   "encoding/json"
   "log"
-  "fmt"
 )
 
 type Report interface {
@@ -59,14 +58,16 @@ func (r *CensusReports) ParseConfig(config []byte) {
       report.ParseConfig(reportConfig)
       r.reports = append(r.reports, report)
     default:
-      log.Print("Report kind " + kind + " not supported.")
+      log.Print("Report kind '" + kind + "' not supported.")
     }
   }
 }
 
-func (r *CensusReports) MakeRequests(codes CensusLocationCodes) {
+func (r *CensusReports) RequestAndParseData(codes CensusLocationCodes) []interface{} {
+  results := []interface{}{}
   for i := range r.reports {
-    result := r.reports[i].RequestAndParseData(codes)
-    fmt.Printf("%s\n", result)
+    reportResult := r.reports[i].RequestAndParseData(codes)
+    results = append(results, reportResult)
   }
+  return results
 }

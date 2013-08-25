@@ -43,5 +43,6 @@ func TestParseAndRequestData(t *testing.T) {
   _, codes := RequestLocationFromCoords(47.598755, -122.332764)
   r := new(CensusReports)
   r.ParseConfig(testFile)
-  r.MakeRequests(codes)
+  results := r.RequestAndParseData(codes)
+  fmt.Printf("%v\n", results)
 }
