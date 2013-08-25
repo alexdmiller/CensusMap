@@ -24,7 +24,7 @@ func newPlainValueReport(t *testing.T) *PlainValueReport {
 
 func TestParseConfig(t *testing.T) {
   r := newPlainValueReport(t)
-  required := r.GetRequiredVariables()
+  required := r.requiredVariables
   expected := []string{"B01003_001", "B02001_007"}
   sort.Strings(required)
   sort.Strings(expected)
@@ -39,8 +39,8 @@ func TestWriteFormattedReport(t *testing.T) {
   out := make([]byte, 0, 10)
   writer := bytes.NewBuffer(out)
   r := newPlainValueReport(t)
-  r.SetVariable("B01003_001", "12345")
-  r.SetVariable("B02001_007", "6798765")
+  r.setVariable("B01003_001", "12345")
+  r.setVariable("B02001_007", "6798765")
   r.WriteFormattedReport(writer)
   expected := []byte(`{"kind":"plain_value","vars":{"Other":"6798765","Total Population":"12345"}}`)
   actual := writer.Bytes()

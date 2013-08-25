@@ -24,7 +24,7 @@ func (r *PlainValueReport) ParseConfig(config map[string]interface{}) {
   }
 }
 
-func (r *PlainValueReport) GetRequiredVariables() []string {
+func (r *PlainValueReport) getRequiredVariables() []string {
   return r.requiredVariables
 }
 

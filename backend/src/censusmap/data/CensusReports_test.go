@@ -1,9 +1,7 @@
 package data
 
 import (
-  "testing"
-  "sort"
-  "fmt"
+
 )
 
 var testFile = []byte(`[
@@ -27,17 +25,3 @@ var testFile = []byte(`[
     }
   }
 ]`)
-
-func TestParseConfigFile(t *testing.T) {
-  r := new(CensusReports)
-  r.ParseConfig(testFile)
-  required := r.GetRequiredVariables()
-  expected := []string{"B01003_001", "B02001_007"}
-  sort.Strings(required)
-  sort.Strings(expected)
-  requiredString := fmt.Sprintf("%v", required)
-  expectedString := fmt.Sprintf("%v", expected)
-  if requiredString !=  expectedString {
-    t.Errorf("Expected %v but got %v", expectedString, requiredString)
-  }
-}
