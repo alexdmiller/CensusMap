@@ -4,11 +4,12 @@ import (
   "io"
   "encoding/json"
   "log"
+  "fmt"
 )
 
 type Report interface {
   ParseConfig(config map[string]interface{})
-  RequestData()
+  RequestData(code CensusLocationCodes)
   WriteFormattedReport(w io.Writer)
 }
 
@@ -28,8 +29,9 @@ func (r *BaseReport) setVariable(name string, value string) {
   r.variableValues[name] = value
 }
 
-func (r *BaseReport) RequestData() {
-
+func (r *BaseReport) RequestData(codes CensusLocationCodes) {
+  result := RequestCensusDataFromCodes(codes, []string{"B01003_001E", "B02001_001E"})
+  fmt.Printf("%v", result)
 }
 
 

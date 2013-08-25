@@ -48,3 +48,9 @@ func TestWriteFormattedReport(t *testing.T) {
     t.Error("Expected %s but got %s", expected, actual)
   }
 }
+
+func TestRequestData(t *testing.T) {
+  _, codes := RequestLocationFromCoords(47.598755, -122.332764)
+  r := newPlainValueReport(t)
+  r.RequestData(codes)
+}
