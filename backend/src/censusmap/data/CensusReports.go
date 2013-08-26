@@ -17,10 +17,6 @@ type BaseReport struct {
   parsedConfig map[string]interface{}
 }
 
-type BaseConfigFormat struct {
-  Kind string `json:"kind"`
-}
-
 func (r *BaseReport) requestData(codes CensusLocationCodes) map[string]string {
   variableValues := map[string]string{}
   result := RequestCensusDataFromCodes(codes, r.requiredVariables)
@@ -67,16 +63,21 @@ func (r *CensusReports) ParseConfig(config []byte) {
   }
 }
 
+type ReportAndPosition struct {
+  Position int
+  Report interface{}
+}
+
 func (r *CensusReports) RequestAndParseData(codes CensusLocationCodes) []interface{} {
   var wg sync.WaitGroup
   wg.Add(len(r.reports))
-  ch := make(chan interface{})
+  ch := make(chan ReportAndPosition)
   for i := range r.reports {
-    go func(report Report, ch chan interface{}, wg *sync.WaitGroup) {
+    go func(report Report, ch chan ReportAndPosition, wg *sync.WaitGroup, position int) {
       defer wg.Done()
-      reportResult := report.RequestAndParseData(codes)
-      ch <- reportResult.(interface{})
-    }(r.reports[i], ch, &wg)
+      reportResult := report.RequestAndParseData(codes).(interface{})
+      ch <- ReportAndPosition{position, reportResult}
+    }(r.reports[i], ch, &wg, i)
   }
 
   go func() {
@@ -84,9 +85,9 @@ func (r *CensusReports) RequestAndParseData(codes CensusLocationCodes) []interfa
     close(ch)
   }()
 
-  results := []interface{}{}
+  results := make([]interface{}, len(r.reports), len(r.reports))
   for result := range ch {
-    results = append(results, result)
+    results[result.Position] = result.Report
   }
 
   return results

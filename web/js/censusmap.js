@@ -37,7 +37,8 @@ function updateInfoBox(latitude, longitude) {
   }).done(function(response) {
     infobox.html("");
     response = JSON.parse(response);
-    $.each(response, function(i, report) {
+    console.log(response);
+    $.each(response.reports, function(i, report) {
       switch (report.kind) {
         case 'plain_value':
         infobox.append(renderPlainValueReport(report));
