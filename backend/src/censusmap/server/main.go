@@ -16,9 +16,13 @@ var reports *data.CensusReports
 func handler(w http.ResponseWriter, r *http.Request) {
   r.ParseForm()
   log.Printf("Request: %s, %s", r.Form["lat"][0], r.Form["long"][0])
-  // 47.598755, -122.332764
-  _, codes := data.RequestLocationFromCoords(r.Form["lat"][0], r.Form["long"][0])
-  result := reports.RequestAndParseData(codes)
+  location, codes := data.RequestLocationFromCoords(r.Form["lat"][0], r.Form["long"][0])
+  reportResults := reports.RequestAndParseData(codes)
+  result := map[string]interface{}{}
+  result["reports"] = reportResults
+  result["tract"] = string(codes.TractCode)
+  result["county"] = location.County
+  result["state"] = location.State
   resultJSON, err := json.Marshal(result)
   if err != nil {
     log.Fatal(err)
