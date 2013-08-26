@@ -12,3 +12,7 @@ body {
   padding: 20px;
   box-shadow: 3px 3px 0px #CCCCCC;
 }
+
+.loading {
+  color: #CCCCCC;
+}

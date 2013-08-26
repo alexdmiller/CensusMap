@@ -3,12 +3,12 @@ var currentMarker;
 
 $(document).ready(function() {
   var mapOptions = {
-    zoom: 8,
+    zoom: 1,
     center: new google.maps.LatLng(46.619, -120),
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
   map = new google.maps.Map(document.getElementById('map-canvas'),
-      mapOptions);
+    mapOptions);
   google.maps.event.addListener(map, 'click', onMapClick);
   updateInfoBox(47.598755, -122.332764);
 });
@@ -22,6 +22,9 @@ function onMapClick(event) {
 }
 
 function updateInfoBox(latitude, longitude) {
+  var infobox = $("#info-box");
+  var spinner = new Spinner().spin(infobox[0]);
+  infobox.addClass('loading');
   $.ajax("api/census", {
     data: {
       lat: latitude,
@@ -29,7 +32,8 @@ function updateInfoBox(latitude, longitude) {
     }
   }).done(function(response) {
     console.log(response);
-    $("#info-box").html(response);
+    infobox.html(response);
+    infobox.removeClass('loading');
   });
 }
 
