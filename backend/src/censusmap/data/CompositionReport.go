@@ -29,6 +29,8 @@ func (r *CompositionReport) RequestAndParseData(codes CensusLocationCodes) inter
   variableValues := r.requestData(codes)
   response := new(CompositionConfigFormat)
   response.Kind = "composition"
+  response.Name = r.name
+  response.Total = variableValues[r.parsedConfig["total"].(string)]
   response.Parts = map[string]string{}
   for name, code := range r.parsedConfig["parts"].(map[string]interface{}) {
     response.Parts[name] = variableValues[code.(string)]
