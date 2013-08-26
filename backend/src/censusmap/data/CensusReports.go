@@ -3,6 +3,7 @@ package data
 import (
   "encoding/json"
   "log"
+  "sync"
 )
 
 type Report interface {
@@ -67,10 +68,26 @@ func (r *CensusReports) ParseConfig(config []byte) {
 }
 
 func (r *CensusReports) RequestAndParseData(codes CensusLocationCodes) []interface{} {
-  results := []interface{}{}
+  var wg sync.WaitGroup
+  wg.Add(len(r.reports))
+  ch := make(chan interface{})
   for i := range r.reports {
-    reportResult := r.reports[i].RequestAndParseData(codes)
-    results = append(results, reportResult)
+    go func(report Report, ch chan interface{}, wg *sync.WaitGroup) {
+      defer wg.Done()
+      reportResult := report.RequestAndParseData(codes)
+      ch <- reportResult.(interface{})
+    }(r.reports[i], ch, &wg)
   }
+
+  go func() {
+    wg.Wait()
+    close(ch)
+  }()
+
+  results := []interface{}{}
+  for result := range ch {
+    results = append(results, result)
+  }
+
   return results
 }
