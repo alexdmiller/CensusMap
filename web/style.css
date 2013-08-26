@@ -1,5 +1,5 @@
 body {
-  font-family: Maven Pro;
+  font-family: helvetica;
 }
 
 #info-box {
@@ -15,4 +15,8 @@ body {
 
 .loading {
   color: #CCCCCC;
+}
+
+.report {
+  margin-top: 10px;
 }
