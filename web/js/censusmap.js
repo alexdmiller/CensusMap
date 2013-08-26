@@ -1,9 +1,11 @@
 var map;
 var currentMarker;
 
+google.load('visualization', '1.0', {'packages':['corechart']});
+
 $(document).ready(function() {
   var mapOptions = {
-    zoom: 4,
+    zoom: 5,
     center: new google.maps.LatLng(46.619, -120),
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
@@ -37,8 +39,11 @@ function updateInfoBox(latitude, longitude) {
   }).done(function(response) {
     infobox.html("");
     response = JSON.parse(response);
+    var state = $("<span>", {class: 'name'});
+    state.html(response.state);
+    infobox.append(state);
     var header = $("<h1>");
-    header.html(response.county + ", " + response.state + " (Tract: " + response.tract + ")");
+    header.html("Tract " + response.tract + ", " + response.county + " County");
     infobox.append(header);
     console.log(response);
     $.each(response.reports, function(i, report) {
@@ -78,11 +83,22 @@ function renderPlainValueReport(report) {
 function renderCompositionReport(report) {
   var wrapper = $("<div>");
   wrapper.addClass("report");
+  wrapper.append('<span class="name">' + report.name + '</span>');
+  var data = new google.visualization.DataTable();
+  data.addColumn('string', 'Race');
+  data.addColumn('number', 'Count');
   $.each(report.parts, function(key, variable) {
-    variableWrapper = $("<div>");
-    variableWrapper.html(key + ": " + variable);
-    wrapper.append(variableWrapper);
+    data.addRow([key, parseInt(variable)]);
   });
-  console.log(wrapper);
+  var chartDiv = $("<div>");
+  chartDiv.addClass("chart");
+  var chart = new google.visualization.ColumnChart(chartDiv[0]);
+  wrapper.append(chartDiv);
+  chart.draw(data, {
+    animation: {duration: 1},
+    vAxis: {textPosition: 'in'},
+    chartArea: {width: '100%'},
+    legend: {position: 'none'}
+  });
   return wrapper;
 }
