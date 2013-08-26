@@ -37,6 +37,9 @@ function updateInfoBox(latitude, longitude) {
   }).done(function(response) {
     infobox.html("");
     response = JSON.parse(response);
+    var header = $("<h1>");
+    header.html(response.county + ", " + response.state + " (Tract: " + response.tract + ")");
+    infobox.append(header);
     console.log(response);
     $.each(response.reports, function(i, report) {
       switch (report.kind) {
@@ -52,12 +55,20 @@ function updateInfoBox(latitude, longitude) {
   });
 }
 
+function commaSeparateNumber(val) {
+  while (/(\d+)(\d{3})/.test(val.toString())) {
+    val = val.toString().replace(/(\d+)(\d{3})/, '$1'+','+'$2');
+  }
+  return val;
+}
+
 function renderPlainValueReport(report) {
   var wrapper = $("<div>");
   wrapper.addClass("report");
   $.each(report.vars, function(key, variable) {
     variableWrapper = $("<div>");
-    variableWrapper.html(key + ": " + variable);
+    variableWrapper.addClass('single-value');
+    variableWrapper.html('<span class="name">' + key + '</span><span class="value">' + commaSeparateNumber(variable) + '</span>');
     wrapper.append(variableWrapper);
   });
   console.log(wrapper);

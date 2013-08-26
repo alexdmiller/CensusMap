@@ -19,4 +19,29 @@ body {
 
 .report {
   margin-top: 10px;
+  border: 1px solid #CFCFCF;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.single-value .name, .single-value .value {
+  display: block;
+}
+
+.single-value .name {
+  font-family: helvetica;
+  font-weight: bold;
+  font-size: 15px;
+  text-transform: uppercase;
+  color: #333;
+}
+
+.single-value .value {
+  font-family: 'Crete Round', serif;
+  font-size: 25px;
+}
+
+h1 {
+  font-family: 'Crete Round', serif;
+  font-size: 25px;
 }
