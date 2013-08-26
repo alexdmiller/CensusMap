@@ -13,6 +13,7 @@ type Report interface {
 
 type BaseReport struct {
   requiredVariables []string
+  parsedConfig map[string]interface{}
 }
 
 type BaseConfigFormat struct {

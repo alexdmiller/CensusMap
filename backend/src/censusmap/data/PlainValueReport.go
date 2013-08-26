@@ -2,7 +2,6 @@ package data
 
 type PlainValueReport struct {
   BaseReport
-  parsedConfig map[string]interface{}
 }
 
 type PlainValueConfigFormat struct {
