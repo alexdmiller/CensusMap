@@ -13,7 +13,10 @@ var configFileName string
 var reports *data.CensusReports
 
 func handler(w http.ResponseWriter, r *http.Request) {
-  _, codes := data.RequestLocationFromCoords(47.598755, -122.332764)
+  r.ParseForm()
+  log.Printf("Request: %s, %s", r.Form["lat"][0], r.Form["long"][0])
+  // 47.598755, -122.332764
+  _, codes := data.RequestLocationFromCoords(r.Form["lat"][0], r.Form["long"][0])
   result := reports.RequestAndParseData(codes)
   resultJSON, err := json.Marshal(result)
   if err != nil {
@@ -32,6 +35,6 @@ func main() {
   reports = new(data.CensusReports)
   reports.ParseConfig(config)
 
-  http.HandleFunc("/", handler)
+  http.HandleFunc("/api/census", handler)
   http.ListenAndServe(":8080", nil)
 }

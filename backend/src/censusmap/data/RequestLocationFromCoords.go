@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"net/url"
 	"io/ioutil"
-	"strconv"
 	"log"
 	"encoding/json"
 )
@@ -38,15 +37,11 @@ type CensusLocationCodes struct {
  * longitude. A block group is the finest granularity of geographic data released
  * by the US Census.  
  */
-func RequestLocationFromCoords(lat float64, lon float64) (CensusLocation, CensusLocationCodes) {
-	stringParams := []string{
-		strconv.FormatFloat(lat, 'f', -1, 64),
-		strconv.FormatFloat(lon, 'f', -1, 64),
-	}
+func RequestLocationFromCoords(lat string, lon string) (CensusLocation, CensusLocationCodes) {
 	values := url.Values{
 		"format": {"json"},
-		"latitude": stringParams[0:1],
-		"longitude": stringParams[1:2],
+		"latitude": {lat},
+		"longitude": {lon},
 		"showall": {"true"},
 	}
 	res, err := http.Get(FCCBlockAPI + "?" + values.Encode())
