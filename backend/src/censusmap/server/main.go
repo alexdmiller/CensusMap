@@ -10,6 +10,7 @@ import (
 )
 
 var configFileName string
+var wwwDirectory string
 var reports *data.CensusReports
 
 func handler(w http.ResponseWriter, r *http.Request) {
@@ -27,6 +28,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
   flag.StringVar(&configFileName, "c", "config/variable_codes.json", "path to configuration file")
+  flag.StringVar(&wwwDirectory, "w", "/tmp", "path to www directory")
   flag.Parse()
   config, err := ioutil.ReadFile(configFileName)
   if err != nil {
@@ -34,7 +36,8 @@ func main() {
   }
   reports = new(data.CensusReports)
   reports.ParseConfig(config)
-
+  
+  http.Handle("/", http.FileServer(http.Dir(wwwDirectory)))
   http.HandleFunc("/api/census", handler)
   http.ListenAndServe(":8080", nil)
 }

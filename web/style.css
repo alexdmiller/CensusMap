@@ -1,0 +1,14 @@
+body {
+  font-family: Maven Pro;
+}
+
+#info-box {
+  z-index: 100;
+  width: 30%;
+  position: absolute;
+  right: 30px;
+  top: 30px;
+  background-color: #FFF;
+  padding: 20px;
+  box-shadow: 3px 3px 0px #CCCCCC;
+}
