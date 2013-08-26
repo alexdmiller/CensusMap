@@ -88,17 +88,20 @@ function renderCompositionReport(report) {
   data.addColumn('string', 'Race');
   data.addColumn('number', 'Count');
   $.each(report.parts, function(key, variable) {
-    data.addRow([key, parseInt(variable)]);
+    if (parseInt(variable) > 10) {
+      data.addRow([key, parseInt(variable)]);
+    }
   });
+  data.sort({column: 1, desc: true});
   var chartDiv = $("<div>");
   chartDiv.addClass("chart");
-  var chart = new google.visualization.ColumnChart(chartDiv[0]);
+  var chart = new google.visualization.BarChart(chartDiv[0]);
   wrapper.append(chartDiv);
   chart.draw(data, {
+    width: 450,
     animation: {duration: 1},
-    vAxis: {textPosition: 'in'},
-    chartArea: {width: '100%'},
-    legend: {position: 'none'}
+    legend: {position: 'none'},
+    chartArea: {left: 100, height: "80%"}
   });
   return wrapper;
 }
