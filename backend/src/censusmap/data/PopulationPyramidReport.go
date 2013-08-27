@@ -10,17 +10,17 @@ type PopulationPyramidReport struct {
 type PopulationPyramidConfigFormat struct {
   Kind string `json:"kind"`
   Name string `json:"name"`
-  Ages map[string][]string `json:"ages"`
+  Ages [][]string `json:"ages"`
 }
 
 func (r *PopulationPyramidReport) ParseConfig(config map[string]interface{}) {
   r.parsedConfig = config
   r.name = r.parsedConfig["name"].(string)
-  ages := r.parsedConfig["ages"].(map[string]interface{})
+  ages := r.parsedConfig["ages"].([]interface{})
   for _, maleFemale := range ages {
     a := maleFemale.([]interface{})
-    r.requiredVariables = append(r.requiredVariables, a[0].(string))
     r.requiredVariables = append(r.requiredVariables, a[1].(string))
+    r.requiredVariables = append(r.requiredVariables, a[2].(string))
   }
 }
 
@@ -33,12 +33,12 @@ func (r *PopulationPyramidReport) RequestAndParseData(codes CensusLocationCodes)
   response := new(PopulationPyramidConfigFormat)
   response.Kind = "population_pyramid"
   response.Name = r.name
-  response.Ages = map[string][]string{}
-  for name, maleFemaleCodes := range r.parsedConfig["ages"].(map[string]interface{}) {
+  response.Ages = make([][]string, len(r.parsedConfig["ages"].([]interface{})))
+  for i, maleFemaleCodes := range r.parsedConfig["ages"].([]interface{}) {
     a := maleFemaleCodes.([]interface{})
-    maleResult := variableValues[a[0].(string)]
-    femaleResult := variableValues[a[1].(string)]
-    response.Ages[name] = []string{maleResult, femaleResult}
+    maleResult := variableValues[a[1].(string)]
+    femaleResult := variableValues[a[2].(string)]
+    response.Ages[i] = []string{a[0].(string), maleResult, femaleResult}
   }
   return response
 }

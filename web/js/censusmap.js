@@ -16,11 +16,11 @@ $(document).ready(function() {
 });
 
 function onMapClick(event) {
-  setMarker(event.latLng.mb, event.latLng.nb);
+  setMarker(event.latLng.ob, event.latLng.pb);
 }
 
 function setMarker(longitude, latitude) {
-   if (currentMarker) {
+  if (currentMarker) {
     currentMarker.setMap(null);
   }
   currentMarker = new google.maps.Marker({position: new google.maps.LatLng(longitude, latitude), map: map});
@@ -54,6 +54,9 @@ function updateInfoBox(latitude, longitude) {
         case 'composition':
         infobox.append(renderCompositionReport(report));
         break;
+        case 'population_pyramid':
+        infobox.append(renderPopulationPyramidReport(report));
+        break;
       }
     });
     infobox.removeClass('loading');
@@ -85,7 +88,7 @@ function renderCompositionReport(report) {
   wrapper.addClass("report");
   wrapper.append('<span class="name">' + report.name + '</span>');
   var data = new google.visualization.DataTable();
-  data.addColumn('string', 'Race');
+  data.addColumn('string', 'Title');
   data.addColumn('number', 'Count');
   $.each(report.parts, function(key, variable) {
     if (parseInt(variable) > 0) {
@@ -102,6 +105,35 @@ function renderCompositionReport(report) {
     animation: {duration: 1},
     legend: {position: 'none'},
     chartArea: {left: 100, height: "80%"}
+  });
+  return wrapper;
+}
+
+function renderPopulationPyramidReport(report) {
+  var wrapper = $("<div>");
+  wrapper.addClass("report");
+  wrapper.append('<span class="name">' + report.name + '</span>');
+  var data = new google.visualization.DataTable();
+  data.addColumn('string', 'Title');
+  data.addColumn('number', 'Male');
+  data.addColumn('number', 'Female');
+  $.each(report.ages, function(key, variable) {
+    data.addRow([variable[0], parseInt(variable[1]), -parseInt(variable[2])]);
+  });
+  var chartDiv = $("<div>");
+  chartDiv.addClass("chart");
+  var chart = new google.visualization.BarChart(chartDiv[0]);
+  wrapper.append(chartDiv);
+  chart.draw(data, {
+    width: 450,
+    height: 400,
+    animation: {duration: 1},
+    legend: {position: 'none'},
+    chartArea: {left: 120, height: "100%"},
+    isStacked: true,        // stacks the bars
+    vAxis: {
+      direction: -1       // reverses the chart upside down
+    }
   });
   return wrapper;
 }
