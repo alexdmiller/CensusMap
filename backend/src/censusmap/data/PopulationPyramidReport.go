@@ -34,9 +34,10 @@ func (r *PopulationPyramidReport) RequestAndParseData(codes CensusLocationCodes)
   response.Kind = "population_pyramid"
   response.Name = r.name
   response.Ages = map[string][]string{}
-  for name, maleFemaleCodes := range r.parsedConfig["ages"].(map[string][]string) {
-    maleResult := variableValues[maleFemaleCodes[0]]
-    femaleResult := variableValues[maleFemaleCodes[1]]
+  for name, maleFemaleCodes := range r.parsedConfig["ages"].(map[string]interface{}) {
+    a := maleFemaleCodes.([]interface{})
+    maleResult := variableValues[a[0].(string)]
+    femaleResult := variableValues[a[1].(string)]
     response.Ages[name] = []string{maleResult, femaleResult}
   }
   return response
