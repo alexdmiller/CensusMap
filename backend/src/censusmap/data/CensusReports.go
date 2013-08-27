@@ -55,11 +55,13 @@ func (r *CensusReports) ParseConfig(config []byte) {
       report = new(PlainValueReport)
     case "composition":
       report = new(CompositionReport)
+    case "population_pyramid":
+      report = new(PopulationPyramidReport)
     default:
       log.Print("Report kind '" + kind + "' not supported.")
     }
     report.ParseConfig(reportConfig)
-      r.reports = append(r.reports, report)
+    r.reports = append(r.reports, report)
   }
 }
 

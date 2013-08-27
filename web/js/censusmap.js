@@ -88,7 +88,7 @@ function renderCompositionReport(report) {
   data.addColumn('string', 'Race');
   data.addColumn('number', 'Count');
   $.each(report.parts, function(key, variable) {
-    if (parseInt(variable) > 10) {
+    if (parseInt(variable) > 0) {
       data.addRow([key, parseInt(variable)]);
     }
   });
