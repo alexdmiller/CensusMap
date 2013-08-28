@@ -24,7 +24,7 @@ func (r *BaseReport) requestData(codes CensusLocationCodes) map[string]string {
   err := json.Unmarshal(result, &resultJSON)
   if err != nil {
     log.Printf("%s", result)
-    log.Fatal(err)
+    panic("JSON parsing error: " + string(result))
   }
   for i := range resultJSON[0] {
     variableValues[resultJSON[0][i]] = resultJSON[1][i]

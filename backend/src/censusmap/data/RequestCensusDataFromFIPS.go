@@ -28,12 +28,14 @@ func RequestCensusDataFromCodes(locationCodes CensusLocationCodes,
     "&key=" + CensusAPIKey
   res, err := http.Get(CensusAPI + ACS52011 + "?" + values)
   if err != nil {
-    log.Fatal(err)
+    log.Println(err)
+    panic("Could not retrieve data from " + CensusAPI + ". ")
   }
   content, err := ioutil.ReadAll(res.Body)
   defer res.Body.Close()
   if err != nil {
-    log.Fatal(err)
+    log.Println(err)
+    panic("Could not retrieve data from " + CensusAPI + ". ")
   }
   return content
 }

@@ -16,6 +16,12 @@ var reports *data.CensusReports
 func handler(w http.ResponseWriter, r *http.Request) {
   r.ParseForm()
   log.Printf("Request: %s, %s", r.Form["lat"][0], r.Form["long"][0])
+  defer func(w http.ResponseWriter) {
+    if r := recover(); r != nil {
+      log.Println("Error: ", r)
+      w.Write([]byte(r.(string)))
+    }
+  }(w)
   location, codes := data.RequestLocationFromCoords(r.Form["lat"][0], r.Form["long"][0])
   reportResults := reports.RequestAndParseData(codes)
   result := map[string]interface{}{}

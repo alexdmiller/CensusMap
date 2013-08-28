@@ -42,28 +42,37 @@ function updateInfoBox(latitude, longitude) {
     }
   }).done(function(response) {
     infobox.html("");
-    response = JSON.parse(response);
-    var state = $("<span>", {class: 'name'});
-    state.html(response.state);
-    infobox.append(state);
-    var header = $("<h1>");
-    header.html("Tract " + response.tract + ", " + response.county + " County");
-    infobox.append(header);
-    console.log(response);
-    $.each(response.reports, function(i, report) {
-      switch (report.kind) {
-        case 'plain_value':
-        infobox.append(renderPlainValueReport(report));
-        break;
-        case 'composition':
-        infobox.append(renderCompositionReport(report));
-        break;
-        case 'population_pyramid':
-        infobox.append(renderPopulationPyramidReport(report));
-        break;
-      }
-    });
-    infobox.removeClass('loading');
+    try {
+      response = JSON.parse(response);
+      var state = $("<span>", {class: 'name'});
+      state.html(response.state);
+      infobox.append(state);
+      var header = $("<h1>");
+      header.html("Tract " + response.tract + ", " + response.county + " County");
+      infobox.append(header);
+      console.log(response);
+      $.each(response.reports, function(i, report) {
+        switch (report.kind) {
+          case 'plain_value':
+          infobox.append(renderPlainValueReport(report));
+          break;
+          case 'composition':
+          infobox.append(renderCompositionReport(report));
+          break;
+          case 'population_pyramid':
+          infobox.append(renderPopulationPyramidReport(report));
+          break;
+        }
+      });
+      infobox.removeClass('loading');
+    } catch (error) {
+      var errorMessage = $("<div>");
+      errorMessage.addClass('error');
+      errorMessage.append("<h1>Error</h1>");
+      errorMessage.append("<p>" + response + "</p>");
+      infobox.append(errorMessage);
+      infobox.removeClass('loading');
+    }
   });
 }
 
@@ -83,7 +92,6 @@ function renderPlainValueReport(report) {
     variableWrapper.html('<span class="name">' + key + '</span><span class="value">' + commaSeparateNumber(variable) + '</span>');
     wrapper.append(variableWrapper);
   });
-  console.log(wrapper);
   return wrapper;
 }
 
