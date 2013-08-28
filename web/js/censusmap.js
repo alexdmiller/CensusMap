@@ -13,6 +13,10 @@ $(document).ready(function() {
     mapOptions);
   google.maps.event.addListener(map, 'click', onMapClick);
   setMarker(46.619, -120);
+  $("#info-box").height($(window).height() - 100)
+  $(window).resize(function() {
+    $("#info-box").height($(window).height() - 100)
+  });
 });
 
 function onMapClick(event) {
@@ -130,7 +134,7 @@ function renderPopulationPyramidReport(report) {
     animation: {duration: 1},
     legend: {position: 'none'},
     chartArea: {left: 120, height: "100%"},
-    isStacked: true,        // stacks the bars
+     isStacked: true,        // stacks the bars
     vAxis: {
       direction: -1       // reverses the chart upside down
     }
