@@ -44,6 +44,7 @@ func (r *CensusReports) ParseConfig(config []byte) {
   var parsed []interface{}
   err := json.Unmarshal(config, &parsed)
   if err != nil {
+    log.Printf("Error when parsing ")
     log.Fatal(err)
   }
   var report Report

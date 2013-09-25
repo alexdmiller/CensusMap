@@ -13,14 +13,15 @@ $(document).ready(function() {
     mapOptions);
   google.maps.event.addListener(map, 'click', onMapClick);
   setMarker(46.619, -120);
-  $("#info-box").height($(window).height() - 100)
+  $("#info-box").height($(window).height() - 100);
   $(window).resize(function() {
-    $("#info-box").height($(window).height() - 100)
+    $("#info-box").height($(window).height() - 100);
   });
 });
 
 function onMapClick(event) {
-  setMarker(event.latLng.ob, event.latLng.pb);
+  console.log(event.latLng);
+  setMarker(event.latLng.nb, event.latLng.ob);
 }
 
 function setMarker(longitude, latitude) {
@@ -50,7 +51,6 @@ function updateInfoBox(latitude, longitude) {
       var header = $("<h1>");
       header.html("Tract " + response.tract + ", " + response.county + " County");
       infobox.append(header);
-      console.log(response);
       $.each(response.reports, function(i, report) {
         switch (report.kind) {
           case 'plain_value':

@@ -13,6 +13,7 @@ var configFileName string
 var wwwDirectory string
 var reports *data.CensusReports
 
+// TODO: return error if request malformatted
 func handler(w http.ResponseWriter, r *http.Request) {
   r.ParseForm()
   log.Printf("Request: %s, %s", r.Form["lat"][0], r.Form["long"][0])
@@ -34,6 +35,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
     log.Fatal(err)
   }
   w.Write(resultJSON)
+  log.Printf("Response sent for %s, %s", r.Form["lat"][0], r.Form["long"][0])
 }
 
 func main() {
