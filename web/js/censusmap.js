@@ -103,8 +103,8 @@ function renderCompositionReport(report) {
   data.addColumn('string', 'Title');
   data.addColumn('number', 'Count');
   $.each(report.parts, function(key, variable) {
-    if (parseInt(variable) > 0) {
-      data.addRow([key, parseInt(variable)]);
+    if (!report.dropZeros || parseInt(variable[1]) > 0) {
+      data.addRow([variable[0], parseInt(variable[1])]);
     }
   });
   if (report.sorted) {
@@ -118,7 +118,7 @@ function renderCompositionReport(report) {
     width: 450,
     animation: {duration: 1},
     legend: {position: 'none'},
-    chartArea: {left: 100, height: "80%"}
+    chartArea: {left: 130, width: 300, height: "80%"}
   });
   return wrapper;
 }

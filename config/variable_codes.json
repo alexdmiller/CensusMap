@@ -15,6 +15,7 @@
     "kind": "composition",
     "total": "B02001_001E",
     "sorted": true,
+    "dropZeros": true,
     "name": "Racial Distribution",
     "parts": [
       ["White", "B02001_002E"],
@@ -61,6 +62,7 @@
     "total": "B19001_001E",
     "name": "Household Income Distribution",
     "sorted": false,
+    "dropZeros": false,    
     "parts": [
       ["Less than $10,000", "B19001_002E"],
       ["$10,000 to $14,999", "B19001_003E"],
