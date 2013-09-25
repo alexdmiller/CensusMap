@@ -107,7 +107,9 @@ function renderCompositionReport(report) {
       data.addRow([key, parseInt(variable)]);
     }
   });
-  data.sort({column: 1, desc: true});
+  if (report.sorted) {
+    data.sort({column: 1, desc: true});  
+  }
   var chartDiv = $("<div>");
   chartDiv.addClass("chart");
   var chart = new google.visualization.BarChart(chartDiv[0]);

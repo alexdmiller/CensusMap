@@ -3,21 +3,26 @@ package data
 type CompositionReport struct {
   BaseReport
   name string
+  sorted bool
 }
 
 type CompositionConfigFormat struct {
   Kind string `json:"kind"`
   Total string `json:"total"`
   Name string `json:"name"`
-  Parts map[string]string `json:"parts"`
+  Parts [][]string `json:"parts"`
+  Sorted bool `json:"sorted"`
 }
 
 func (r *CompositionReport) ParseConfig(config map[string]interface{}) {
   r.parsedConfig = config
   r.name = r.parsedConfig["name"].(string)
+  r.sorted = r.parsedConfig["sorted"].(bool)
   r.requiredVariables = []string{r.parsedConfig["total"].(string)}
-  for _, code := range r.parsedConfig["parts"].(map[string]interface{}) {
-    r.requiredVariables = append(r.requiredVariables, code.(string))
+  parts := r.parsedConfig["parts"].([]interface{})
+  for _, part := range parts {
+    a := part.([]interface{})
+    r.requiredVariables = append(r.requiredVariables, a[1].(string))
   }
 }
 
@@ -30,10 +35,14 @@ func (r *CompositionReport) RequestAndParseData(codes CensusLocationCodes) inter
   response := new(CompositionConfigFormat)
   response.Kind = "composition"
   response.Name = r.name
+  response.Sorted = r.sorted
   response.Total = variableValues[r.parsedConfig["total"].(string)]
-  response.Parts = map[string]string{}
-  for name, code := range r.parsedConfig["parts"].(map[string]interface{}) {
-    response.Parts[name] = variableValues[code.(string)]
+  response.Parts = make([][]string, len(r.parsedConfig["parts"].([]interface{})))
+
+  for i, partResult := range r.parsedConfig["parts"].([]interface{}) {
+    a := partResult.([]interface{})
+    code := variableValues[a[1].(string)]
+    response.Parts[i] = []string{a[0].(string), code}
   }
   return response
 }
