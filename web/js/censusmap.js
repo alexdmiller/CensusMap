@@ -114,12 +114,26 @@ function renderCompositionReport(report) {
   chartDiv.addClass("chart");
   var chart = new google.visualization.BarChart(chartDiv[0]);
   wrapper.append(chartDiv);
-  chart.draw(data, {
-    width: 450,
-    animation: {duration: 1},
-    legend: {position: 'none'},
-    chartArea: {left: 130, width: 300, height: "80%"}
-  });
+  if (report.display == "list") {
+    chart.draw(data, {
+      width: 450,
+      height: 450,
+      animation: {duration: 1},
+      legend: {position: 'none'},
+      chartArea: {width: "100%", height: "90%"},
+      vAxis: {textPosition: 'in', textStyle: {fontSize: 15}},
+      bar: {groupWidth: "90%"},
+      colors: ['#B8E6E6']
+    });
+  } else {
+    chart.draw(data, {
+      width: 450,
+      animation: {duration: 1},
+      legend: {position: 'none'},
+      chartArea: {left: 130, width: 300, height: "80%"}
+    });
+  }
+  
   return wrapper;
 }
 
@@ -144,9 +158,9 @@ function renderPopulationPyramidReport(report) {
     animation: {duration: 1},
     legend: {position: 'none'},
     chartArea: {left: 120, height: "100%"},
-     isStacked: true,        // stacks the bars
+     isStacked: true,
     vAxis: {
-      direction: -1       // reverses the chart upside down
+      direction: -1
     }
   });
   return wrapper;
