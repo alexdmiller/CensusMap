@@ -7,32 +7,47 @@ $(document).ready(function() {
   // set up map
   var mapOptions = {
     zoom: 5,
-    center: new google.maps.LatLng(39.50404070558415, -97.1630859375),
+    center: new google.maps.LatLng(39.027718840211605, -101.3818359375),
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
   map = new google.maps.Map(document.getElementById('map-canvas'),
     mapOptions);
   google.maps.event.addListener(map, 'click', onMapClick);
   
+  $("#instructions button").click(function() {
+    $("#instructions").hide();
+  });
+  $("#extra-info button").click(function() {
+    $("#extra-info").hide();
+  });
+  $("#open-info").click(function() {
+    $("#extra-info").show();
+    resizeOverlays();
+  });
+  $("#info-box-container").hide();
+  $("#extra-info").hide();
+
+  // position everything based on the size of the window, and setup resize handler
+  resizeOverlays();
+  $(window).resize(resizeOverlays);
+});
+
+function resizeOverlays() {
   $("#instructions").offset({
     top: $(window).height() / 2 - $("#instructions").height() / 2,
     left: $(window).width() / 2 - $("#instructions").width() / 2,
   });
-
-  $("#instructions button").click(function() {
-    $("#instructions").hide();
+  $("#extra-info").offset({
+    top: $(window).height() / 2 - $("#extra-info").height() / 2,
+    left: $(window).width() / 2 - $("#extra-info").width() / 2,
   });
-
-  $("#info-box").hide();
-  $("#info-box").height($(window).height() - 100);
-  $(window).resize(function() {
-    $("#info-box").height($(window).height() - 100);
-  });
-});
+  $("#info-box-container").height($(window).height() - 100);
+  $("#info-content").height($("#info-box-container").height() - $("#info-box-header").height());
+}
 
 function onMapClick(event) {
   $("#instructions").hide();
-  $("#info-box").show();
+  $("#info-box-container").show();
   setMarker(event.latLng.nb, event.latLng.ob);
 }
 
@@ -48,7 +63,7 @@ function updateInfoBox(latitude, longitude) {
   var infobox = $("#info-box");
   var currentScroll = infobox.scrollTop();
   var spinner = new Spinner().spin(infobox[0]);
-  infobox.addClass('loading');
+  $("#info-box-container").addClass('loading');
   $.ajax("api/census", {
     data: {
       lat: latitude,
@@ -56,14 +71,15 @@ function updateInfoBox(latitude, longitude) {
     }
   }).done(function(response) {
     infobox.html("");
+    $("#info-box-header").html("");
     try {
       response = JSON.parse(response);
       var state = $("<span>", {class: 'name'});
       state.html(response.state);
-      infobox.append(state);
+      $("#info-box-header").append(state);
       var header = $("<h1>");
       header.html("Tract " + response.tract + ", " + response.county + " County");
-      infobox.append(header);
+      $("#info-box-header").append(header);
       $.each(response.reports, function(i, report) {
         switch (report.kind) {
           case 'plain_value':
@@ -77,7 +93,7 @@ function updateInfoBox(latitude, longitude) {
           break;
         }
       });
-      infobox.removeClass('loading');
+      $("#info-box-container").removeClass('loading');
       infobox.scrollTop(currentScroll);
     } catch (error) {
       var errorMessage = $("<div>");
@@ -85,7 +101,7 @@ function updateInfoBox(latitude, longitude) {
       errorMessage.append("<h1>Error</h1>");
       errorMessage.append("<p>" + response + "</p>");
       infobox.append(errorMessage);
-      infobox.removeClass('loading');
+      $("#info-box-container").removeClass('loading');
     }
   });
 }
@@ -137,14 +153,15 @@ function renderCompositionReport(report) {
       chartArea: {width: "100%", height: "90%"},
       vAxis: {textPosition: 'in', textStyle: {fontSize: 15}},
       bar: {groupWidth: "90%"},
-      colors: ['#B8E6E6']
+      colors: ['#d6edf7']
     });
   } else {
     chart.draw(data, {
       width: 450,
       animation: {duration: 1},
       legend: {position: 'none'},
-      chartArea: {left: 130, width: 300, height: "80%"}
+      chartArea: {left: 130, width: 300, height: "80%"},
+      colors: ['#000000']
     });
   }
   
@@ -175,7 +192,8 @@ function renderPopulationPyramidReport(report) {
      isStacked: true,
     vAxis: {
       direction: -1
-    }
+    },
+    colors: ["#4386a2", "#c44639"]
   });
   return wrapper;
 }

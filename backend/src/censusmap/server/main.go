@@ -23,7 +23,9 @@ func handler(w http.ResponseWriter, r *http.Request) {
       w.Write([]byte(r.(string)))
     }
   }(w)
+  log.Printf("Requesting census tract code from FCC")
   location, codes := data.RequestLocationFromCoords(r.Form["lat"][0], r.Form["long"][0])
+  log.Printf("Requesting census data from census.gov")
   reportResults := reports.RequestAndParseData(codes)
   result := map[string]interface{}{}
   result["reports"] = reportResults

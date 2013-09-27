@@ -20,15 +20,31 @@
     <script src="js/censusmap.js"></script>
   </head>
   <body>
-    <div id="info-box"></div>
+    <div id="info-box-container">
+      <div id="info-box-header"></div>
+      <div id="info-content">
+        <div id="info-box"></div>
+      </div>
+    </div>
     <div id="map-canvas"></div>
-    <div id="instructions">
+    <div class="window" id="instructions">
       Click anywhere in the U.S. to find information about that location. <button>OK</button>
     </div>
-    <div id="extra-info">
-      <p>Site by Alex Miller. For support and bug reports, use Twitter: <a href="https://twitter.com/admiller">@admiller</a>.</p>
-      <p>Census data provided by the <a href="http://www.census.gov/developers/data/">US Census.gov API</a>. Currently, this site is using the ACS 2007-2011 API, which means the numbers shown are estimates, not actual census counts. To learn about the accuracy of ACS data, read <a href="http://www.census.gov/acs/www/Downloads/data_documentation/Accuracy/ACS_Accuracy_of_Data_2012.pdf">this document</a>. None of the charts on this site display error bars, which should scare you and cause you to question the developer's integrity. Please don't make policy decisions using this site.</p>
-      <p><a href="http://www.pewhispanic.org/2009/05/28/whos-hispanic/">According to the Census Bureau</a>, Hispanics or Latinos can be of any race, any ancestry, any ethnicity, or any country of origin. Therefore the inclusion of the Hispanics/Latinos in the "Racial Distribution" chart is slightly misleading. However, race and ethnicity are arbitrary, socially constructed concepts anyway.</p>
+    <div id="small-info">
+      <ul>
+        <li>By <a href="http://animalsplaygames.com/alex">Alex Miller</a> | <a href="#" id="open-info">Info</a></li>
+        <li><a href="https://twitter.com/intent/tweet?screen_name=admiller" class="twitter-mention-button" data-related="admiller">Tweet to @admiller</a></li>
+      </ul>
     </div>
+    <div class="window" id="extra-info">
+      <h2>Info</h2>
+      <p>The code for this project is available on <a href="https://github.com/alexdmiller/CensusMap">GitHub</a>.
+      <p>To receive support or report bugs, use Twitter (<a href="https://twitter.com/admiller">@admiller</a>), email (<a href="mailto:alexmiller@gmail.com">alexmiller@gmail.com</a>) or <a href="https://github.com/alexdmiller/CensusMap/issues">file an issue on GitHub</a>.</p>
+      <p>US Census data is provided by the <a href="http://www.census.gov/developers/data/">census.gov API</a>. The <a href="http://www.fcc.gov/developers/census-block-conversions-api">FCC Census block conversion API</a> is used to find Census tracts numbers based on longitude and latitude coordinates.</p>
+      <p>This site uses the <a href="http://www.census.gov/acs/www/data_documentation/documentation_main/">American Community Survey 2007-2011</a>, which means the numbers shown are estimates, not actual census counts. To learn about the accuracy of ACS data, read <a href="http://www.census.gov/acs/www/Downloads/data_documentation/Accuracy/ACS_Accuracy_of_Data_2012.pdf">this document</a>. None of the charts on this site display error bars, which should scare you and cause you to question the validity of this site. Please don't make policy decisions using this tool.</p>
+      <p><a href="http://www.pewhispanic.org/2009/05/28/whos-hispanic/">According to the Census Bureau</a>, Hispanics or Latinos can be of any race, any ancestry, any ethnicity, or any country of origin. Therefore the inclusion of the Hispanics/Latinos in the "Racial Distribution" chart is slightly misleading.</p>
+      <button>Close</button>
+    </div>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script> 
   </body>
 </html>

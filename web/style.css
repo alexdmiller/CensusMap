@@ -2,16 +2,32 @@ body {
   font-family: helvetica;
 }
 
-#info-box {
+#info-box-container {
   z-index: 100;
   width: 500px;
   position: absolute;
   right: 30px;
   top: 30px;
-  background-color: #FFF;
-  padding: 20px;
   box-shadow: 3px 3px 0px #CCCCCC;
+}
+
+#info-box {
   overflow: auto;
+  height: 100%;
+}
+
+.window, #info-box-header {
+  background-color: #d6edf7;
+}
+
+#info-box-header {
+  height: 40px;
+  padding: 10px;
+}
+
+#info-content {
+  background-color: #FFF;
+  padding: 0 10px 10px 10px;
 }
 
 .loading {
@@ -29,12 +45,12 @@ body {
   display: block;
 }
 
-.name {
+.name, h2 {
   font-family: helvetica;
   font-weight: bold;
   font-size: 15px;
   text-transform: uppercase;
-  color: #333;
+  color: #0f3748;
 }
 
 .single-value .value {
@@ -44,7 +60,7 @@ body {
 
 h1 {
   font-family: 'Crete Round', serif;
-  font-size: 25px;
+  font-size: 20px;
   margin-top: 0px;
 }
 
@@ -55,18 +71,50 @@ h1 {
   padding-right: 20px;
 }
 
-#instructions {
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: #FFF;
-  padding: 20px;
-  box-shadow: 3px 3px 0px #CCCCCC;
-  z-index: 500;
-}
-
 #instructions button {
   padding: 5px 10px;
   font-size: 15px;
   margin: 0 10px 0 15px;
+}
+
+#small-info {
+  position: absolute;
+  bottom: 30px;
+  left: 10px;
+  background-color: #FFF;
+  padding: 10px;
+  box-shadow: 3px 3px 0px #CCCCCC;
+  z-index: 100;
+  vertical-align: middle;
+}
+
+.window {
+  position: absolute;
+  padding: 20px;
+  box-shadow: 3px 3px 0px #CCCCCC;
+  z-index: 200;
+  border-radius: 5px;
+}
+
+#small-info ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+#small-info li {
+  margin-top: 5px;
+}
+
+#extra-info {
+  width: 400px;
+}
+
+#extra-info button {
+  padding: 5px 10px;
+  font-size: 15px;
+}
+
+a:link, a:visited {
+  color: #4386a2;
 }
