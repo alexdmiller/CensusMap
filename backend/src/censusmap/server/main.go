@@ -32,10 +32,12 @@ func handler(w http.ResponseWriter, r *http.Request) {
   result["state"] = location.State
   resultJSON, err := json.Marshal(result)
   if err != nil {
-    log.Fatal(err)
+    log.Printf("%s", err)
+    w.Write(resultJSON)
+  } else {
+    w.Write(resultJSON)
+    log.Printf("Response sent for %s, %s", r.Form["lat"][0], r.Form["long"][0])  
   }
-  w.Write(resultJSON)
-  log.Printf("Response sent for %s, %s", r.Form["lat"][0], r.Form["long"][0])
 }
 
 func main() {
