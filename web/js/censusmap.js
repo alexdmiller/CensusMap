@@ -34,6 +34,7 @@ function setMarker(longitude, latitude) {
 
 function updateInfoBox(latitude, longitude) {
   var infobox = $("#info-box");
+  var currentScroll = infobox.scrollTop();
   var spinner = new Spinner().spin(infobox[0]);
   infobox.addClass('loading');
   $.ajax("api/census", {
@@ -65,6 +66,7 @@ function updateInfoBox(latitude, longitude) {
         }
       });
       infobox.removeClass('loading');
+      infobox.scrollTop(currentScroll);
     } catch (error) {
       var errorMessage = $("<div>");
       errorMessage.addClass('error');
