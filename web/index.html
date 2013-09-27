@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Simple Map</title>
+    <title>Census Map</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <style>
@@ -22,5 +22,13 @@
   <body>
     <div id="info-box"></div>
     <div id="map-canvas"></div>
+    <div id="instructions">
+      Click anywhere in the U.S. to find information about that location. <button>OK</button>
+    </div>
+    <div id="extra-info">
+      <p>Site by Alex Miller. For support and bug reports, use Twitter: <a href="https://twitter.com/admiller">@admiller</a>.</p>
+      <p>Census data provided by the <a href="http://www.census.gov/developers/data/">US Census.gov API</a>. Currently, this site is using the ACS 2007-2011 API, which means the numbers shown are estimates, not actual census counts. To learn about the accuracy of ACS data, read <a href="http://www.census.gov/acs/www/Downloads/data_documentation/Accuracy/ACS_Accuracy_of_Data_2012.pdf">this document</a>. None of the charts on this site display error bars, which should scare you and cause you to question the developer's integrity. Please don't make policy decisions using this site.</p>
+      <p><a href="http://www.pewhispanic.org/2009/05/28/whos-hispanic/">According to the Census Bureau</a>, Hispanics or Latinos can be of any race, any ancestry, any ethnicity, or any country of origin. Therefore the inclusion of the Hispanics/Latinos in the "Racial Distribution" chart is slightly misleading. However, race and ethnicity are arbitrary, socially constructed concepts anyway.</p>
+    </div>
   </body>
 </html>

@@ -54,3 +54,19 @@ h1 {
   padding-left: 20px;
   padding-right: 20px;
 }
+
+#instructions {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #FFF;
+  padding: 20px;
+  box-shadow: 3px 3px 0px #CCCCCC;
+  z-index: 500;
+}
+
+#instructions button {
+  padding: 5px 10px;
+  font-size: 15px;
+  margin: 0 10px 0 15px;
+}
