@@ -28,8 +28,8 @@ func (r *PopulationPyramidReport) getRequiredVariables() []string {
   return r.requiredVariables
 }
 
-func (r *PopulationPyramidReport) RequestAndParseData(codes CensusLocationCodes) interface{} {
-  variableValues := r.requestData(codes)
+func (r *PopulationPyramidReport) RequestAndParseData(codes CensusLocationCodes, key string) interface{} {
+  variableValues := r.requestData(codes, key)
   response := new(PopulationPyramidConfigFormat)
   response.Kind = "population_pyramid"
   response.Name = r.name

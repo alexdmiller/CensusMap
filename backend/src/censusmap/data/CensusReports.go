@@ -8,8 +8,8 @@ import (
 
 type Report interface {
   ParseConfig(config map[string]interface{})
-  RequestAndParseData(code CensusLocationCodes) interface{}
-  requestData(code CensusLocationCodes) map[string]string
+  RequestAndParseData(code CensusLocationCodes, key string) interface{}
+  requestData(code CensusLocationCodes, key string) map[string]string
 }
 
 type BaseReport struct {
@@ -17,9 +17,9 @@ type BaseReport struct {
   parsedConfig map[string]interface{}
 }
 
-func (r *BaseReport) requestData(codes CensusLocationCodes) map[string]string {
+func (r *BaseReport) requestData(codes CensusLocationCodes, key string) map[string]string {
   variableValues := map[string]string{}
-  result := RequestCensusDataFromCodes(codes, r.requiredVariables)
+  result := RequestCensusDataFromCodes(key, codes, r.requiredVariables)
   resultJSON := [][]string{}
   err := json.Unmarshal(result, &resultJSON)
   if err != nil {
@@ -71,14 +71,14 @@ type ReportAndPosition struct {
   Report interface{}
 }
 
-func (r *CensusReports) RequestAndParseData(codes CensusLocationCodes) []interface{} {
+func (r *CensusReports) RequestAndParseData(codes CensusLocationCodes, key string) []interface{} {
   var wg sync.WaitGroup
   wg.Add(len(r.reports))
   ch := make(chan ReportAndPosition)
   for i := range r.reports {
     go func(report Report, ch chan ReportAndPosition, wg *sync.WaitGroup, position int) {
       defer wg.Done()
-      reportResult := report.RequestAndParseData(codes).(interface{})
+      reportResult := report.RequestAndParseData(codes, key).(interface{})
       ch <- ReportAndPosition{position, reportResult}
     }(r.reports[i], ch, &wg, i)
   }

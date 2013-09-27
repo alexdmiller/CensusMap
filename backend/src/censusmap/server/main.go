@@ -11,6 +11,7 @@ import (
 
 var configFileName string
 var wwwDirectory string
+var key string
 var reports *data.CensusReports
 
 // TODO: return error if request malformatted
@@ -26,7 +27,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
   log.Printf("Requesting census tract code from FCC")
   location, codes := data.RequestLocationFromCoords(r.Form["lat"][0], r.Form["long"][0])
   log.Printf("Requesting census data from census.gov")
-  reportResults := reports.RequestAndParseData(codes)
+  reportResults := reports.RequestAndParseData(codes, key)
   result := map[string]interface{}{}
   result["reports"] = reportResults
   result["tract"] = string(codes.TractCode)
@@ -45,6 +46,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 func main() {
   flag.StringVar(&configFileName, "c", "config/variable_codes.json", "path to configuration file")
   flag.StringVar(&wwwDirectory, "w", "/tmp", "path to www directory")
+  flag.StringVar(&key, "k", "", "census.gov API key")
   flag.Parse()
   config, err := ioutil.ReadFile(configFileName)
   if err != nil {

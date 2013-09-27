@@ -36,8 +36,8 @@ func (r *CompositionReport) getRequiredVariables() []string {
   return r.requiredVariables
 }
 
-func (r *CompositionReport) RequestAndParseData(codes CensusLocationCodes) interface{} {
-  variableValues := r.requestData(codes)
+func (r *CompositionReport) RequestAndParseData(codes CensusLocationCodes, key string) interface{} {
+  variableValues := r.requestData(codes, key)
   response := new(CompositionConfigFormat)
   response.Kind = "composition"
   response.Name = r.name

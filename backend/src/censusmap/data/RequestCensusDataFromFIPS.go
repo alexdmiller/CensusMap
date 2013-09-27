@@ -9,7 +9,6 @@ import (
 
 const CensusAPI string = "http://api.census.gov"
 const ACS52011 string = "/data/2011/acs5"
-const CensusAPIKey string = "ab995d23ecc36a2920db2262f9ea8a9003ab2098"
 
 /**
  * Uses the census.gov API to look up US Census Data for the passed Census location
@@ -19,13 +18,13 @@ const CensusAPIKey string = "ab995d23ecc36a2920db2262f9ea8a9003ab2098"
  * Currently uses American Community Survey data for 2011.
  * TODO: Parameter to determine which dataset is used.
  */
-func RequestCensusDataFromCodes(locationCodes CensusLocationCodes,
+func RequestCensusDataFromCodes(key string, locationCodes CensusLocationCodes,
     variables []string) []byte {
   values := "get=" + strings.Join(variables, ",") +
     "&for=tract:" + string(locationCodes.TractCode) +
     "&in=state:" + string(locationCodes.StateCode) +
       "+county:" + string(locationCodes.CountyCode) +
-    "&key=" + CensusAPIKey
+    "&key=" + key
   res, err := http.Get(CensusAPI + ACS52011 + "?" + values)
   if err != nil {
     log.Println(err)

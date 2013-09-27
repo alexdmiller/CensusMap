@@ -21,8 +21,8 @@ func (r *PlainValueReport) getRequiredVariables() []string {
   return r.requiredVariables
 }
 
-func (r *PlainValueReport) RequestAndParseData(codes CensusLocationCodes) interface{} {
-  variableValues := r.requestData(codes)
+func (r *PlainValueReport) RequestAndParseData(codes CensusLocationCodes, key string) interface{} {
+  variableValues := r.requestData(codes, key)
   response := new(PlainValueConfigFormat)
   response.Kind = "plain_value"
   response.Vars = map[string]string{}
