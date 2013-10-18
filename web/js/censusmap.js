@@ -48,7 +48,7 @@ function resizeOverlays() {
 function onMapClick(event) {
   $("#instructions").hide();
   $("#info-box-container").show();
-  setMarker(event.latLng.nb, event.latLng.ob);
+  setMarker(event.latLng.lat(), event.latLng.lng());
 }
 
 function setMarker(longitude, latitude) {
